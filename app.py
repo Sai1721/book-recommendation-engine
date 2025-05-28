@@ -72,7 +72,34 @@ def fetch_cover(title, author):
     except:
         return ""
     return ""
+import random
 
+# Theme toggle
+theme = st.sidebar.radio("Theme", ["Light", "Dark"])
+if theme == "Dark":
+    st.markdown(
+        """
+        <style>
+        body { background-color: #222; color: #fff; }
+        .st-bb { background-color: #333 !important; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+# Random Book Button
+if st.sidebar.button("🎲 Surprise Me!"):
+    random_idx = random.choice(filtered_df.index)
+    random_book = filtered_df.loc[random_idx]
+    st.subheader("🎲 Random Book Recommendation")
+    st.markdown(f"### {random_book['title']}")
+    st.markdown(f"**Author:** {random_book['authors']}")
+    if 'genres' in random_book and pd.notna(random_book['genres']):
+        genres = [g.strip() for g in random_book['genres'].split(',')]
+        st.markdown(" ".join([f"<span style='background-color:#eee;border-radius:5px;padding:2px 8px;margin-right:4px'>{g}</span>" for g in genres]), unsafe_allow_html=True)
+    st.markdown(f"{random_book['description'][:300]}...")
+    st.markdown("---")
+    
 def recommend_books(query, k=5):
     if not query:
         return []
@@ -82,12 +109,16 @@ def recommend_books(query, k=5):
     for idx in I[0]:
         row = filtered_df.iloc[idx]
         cover_url = fetch_cover(row['title'], row['authors'])
+        # Simulate a rating for demo purposes
+        rating = round(random.uniform(3.0, 5.0), 2)
         results.append({
             "title": row['title'],
             "authors": row['authors'],
             "description": row['description'][:300] + "...",
             "cover_url": cover_url,
-            "info_link": f"https://books.google.com/books?q={row['title'].replace(' ', '+')}"
+            "info_link": f"https://books.google.com/books?q={row['title'].replace(' ', '+')}",
+            "genres": row['genres'] if 'genres' in row else "",
+            "rating": rating
         })
     return results
 
@@ -95,14 +126,24 @@ if query:
     with st.spinner("Finding recommendations..."):
         recs = recommend_books(query)
     if recs:
-        for book in recs:
-            st.markdown(f"### {book['title']}")
-            st.markdown(f"**Author:** {book['authors']}")
-            if book['cover_url']:
-                st.image(book['cover_url'], width=120)
-            st.markdown(f"{book['description']}")
-            st.markdown(f"[More Info]({book['info_link']})")
-            st.markdown("---")
+        cols = st.columns(2)
+        for i, book in enumerate(recs):
+            with cols[i % 2]:
+                st.markdown(f"### {book['title']}")
+                st.markdown(f"**Author:** {book['authors']}")
+                # Genre badges
+                if book['genres']:
+                    genres = [g.strip() for g in book['genres'].split(',')]
+                    st.markdown(" ".join([f"<span style='background-color:#eee;border-radius:5px;padding:2px 8px;margin-right:4px'>{g}</span>" for g in genres]), unsafe_allow_html=True)
+                # Book cover
+                if book['cover_url']:
+                    st.image(book['cover_url'], width=120)
+                # Rating bar
+                st.markdown(f"**Rating:** {book['rating']} ⭐")
+                st.progress(int((book['rating'] / 5.0) * 100))
+                st.markdown(f"{book['description']}")
+                st.markdown(f"[More Info]({book['info_link']})")
+                st.markdown("---")
     else:
         st.write("No recommendations found for your query.")
 else:
