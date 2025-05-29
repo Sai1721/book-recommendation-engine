@@ -74,18 +74,6 @@ def fetch_cover(title, author):
     return ""
 import random
 
-# Theme toggle
-theme = st.sidebar.radio("Theme", ["Light", "Dark"])
-if theme == "Dark":
-    st.markdown(
-        """
-        <style>
-        body { background-color: #222; color: #fff; }
-        .st-bb { background-color: #333 !important; }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
 
 # Random Book Button
 if st.sidebar.button("🎲 Surprise Me!"):
