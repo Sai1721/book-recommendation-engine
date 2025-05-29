@@ -127,8 +127,7 @@ def recommend_books(query, k=5, fav_title=None):
     if fav_title:
         fav_row = df[df['title'] == fav_title]
         if not fav_row.empty:
-            fav_idx = fav_row.index[0]
-            fav_embedding = index.reconstruct(fav_idx).reshape(1, -1)
+            fav_embedding = model.encode([fav_title])
             query_embedding = (query_embedding + fav_embedding) / 2
 
     # Search similar books in the original df
