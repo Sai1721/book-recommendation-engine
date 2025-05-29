@@ -113,7 +113,7 @@ if st.sidebar.button("🎲 Surprise Me!"):
 
 # Simulate Gemini API explanation
 def generate_explanation(user_query, book):
-    genres = book.get('genres', '') if isinstance(book, dict) else book['genres'] if 'genres' in book else ''
+    genres = book.get('genres', '') if hasattr(book, 'get') else ''
     return f"This book is recommended because it shares similar themes or writing style with your interest in '{user_query}' and has strong alignment in genres like {book['genres']}."
 
 # Recommendation function
