@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 from sentence_transformers import SentenceTransformer
+import os
 import faiss
 import numpy as np
 import random
@@ -12,9 +13,27 @@ def load_data():
     df = pd.read_csv("books_metadata.csv")
     return df
 
+# Load FAISS index or build if missing
 @st.cache_resource
-def load_faiss_index():
-    index = faiss.read_index("books.index")
+def load_faiss_index(df, model):
+    index_path = "books.index"
+    
+    if os.path.exists(index_path):
+        try:
+            return faiss.read_index(index_path)
+        except Exception as e:
+            st.warning("Failed to load existing FAISS index. Rebuilding it.")
+    
+    # Build FAISS index from scratch
+    st.info("Building FAISS index from book titles...")
+    titles = df['title'].fillna("").tolist()
+    embeddings = model.encode(titles, show_progress_bar=True)
+    embeddings = np.array(embeddings).astype("float32")
+
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+    faiss.write_index(index, index_path)
+    st.success("FAISS index built and cached.")
     return index
 
 @st.cache_resource
@@ -22,7 +41,7 @@ def load_model():
     return SentenceTransformer('all-MiniLM-L6-v2')
 
 df = load_data()
-index = load_faiss_index()
+index = load_faiss_index(df,model)
 model = load_model()
 
 # Sidebar filters
