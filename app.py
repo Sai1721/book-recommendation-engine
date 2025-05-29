@@ -15,15 +15,20 @@ def load_data():
 
 # Load FAISS index or build if missing
 @st.cache_resource
-def load_faiss_index(df, model):
+def load_model():
+    return SentenceTransformer('all-MiniLM-L6-v2')
+
+@st.cache_resource
+def load_faiss_index(df):
     index_path = "books.index"
-    
+    model = load_model()  # Load model inside the function
+
     if os.path.exists(index_path):
         try:
             return faiss.read_index(index_path)
         except Exception as e:
             st.warning("Failed to load existing FAISS index. Rebuilding it.")
-    
+
     # Build FAISS index from scratch
     st.info("Building FAISS index from book titles...")
     titles = df['title'].fillna("").tolist()
@@ -36,13 +41,9 @@ def load_faiss_index(df, model):
     st.success("FAISS index built and cached.")
     return index
 
-@st.cache_resource
-def load_model():
-    return SentenceTransformer('all-MiniLM-L6-v2')
-
 df = load_data()
 model = load_model()
-index = load_faiss_index(df,model)
+index = load_faiss_index(df)
 
 # Sidebar filters
 st.sidebar.header("Filter books")
