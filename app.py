@@ -41,8 +41,8 @@ def load_model():
     return SentenceTransformer('all-MiniLM-L6-v2')
 
 df = load_data()
-index = load_faiss_index(df,model)
 model = load_model()
+index = load_faiss_index(df,model)
 
 # Sidebar filters
 st.sidebar.header("Filter books")
