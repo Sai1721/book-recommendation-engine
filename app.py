@@ -130,24 +130,34 @@ def recommend_books(query, k=5, fav_title=None):
             fav_embedding = index.reconstruct(fav_idx).reshape(1, -1)
             query_embedding = (query_embedding + fav_embedding) / 2
 
-    # Search similar books
-    D, I = index.search(np.array(query_embedding), k)
+    # Search similar books in the original df
+    D, I = index.search(np.array(query_embedding), k * 3)  # search more to allow for filtering
+
     results = []
+    count = 0
     for idx in I[0]:
-        row = filtered_df.iloc[idx]
-        cover_url = fetch_cover(row['title'], row['authors'])
+        # Get the row from the original df
+        row = df.iloc[idx]
+        # Check if this row is in the filtered_df
+        if row.name not in filtered_df.index:
+            continue
+        filtered_row = filtered_df.loc[row.name]
+        cover_url = fetch_cover(filtered_row['title'], filtered_row['authors'])
         rating = round(random.uniform(3.0, 5.0), 2)
-        explanation = generate_explanation(query or fav_title, row)
+        explanation = generate_explanation(query or fav_title, filtered_row)
         results.append({
-            "title": row['title'],
-            "authors": row['authors'],
-            "description": row['description'][:300] + "...",
+            "title": filtered_row['title'],
+            "authors": filtered_row['authors'],
+            "description": filtered_row['description'][:300] + "...",
             "cover_url": cover_url,
-            "info_link": f"https://books.google.com/books?q={row['title'].replace(' ', '+')}",
-            "genres": row['genres'] if 'genres' in row else "",
+            "info_link": f"https://books.google.com/books?q={filtered_row['title'].replace(' ', '+')}",
+            "genres": filtered_row['genres'] if 'genres' in filtered_row else "",
             "rating": rating,
             "explanation": explanation
         })
+        count += 1
+        if count >= k:
+            break
     return results
 
 # Show recommendations
