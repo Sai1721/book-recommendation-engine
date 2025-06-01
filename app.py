@@ -4,6 +4,7 @@ import requests
 from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
+import textwrap
 
 # --- Custom CSS for improved UI ---
 st.markdown("""
@@ -152,6 +153,7 @@ def fetch_cover(title, author):
     except:
         return ""
     return ""
+
 import random
 
 # Random Book Button
@@ -160,17 +162,18 @@ if st.sidebar.button("🎲 Surprise Me!"):
     random_book = filtered_df.loc[random_idx]
     st.subheader("🎲 Random Book Recommendation")
     st.markdown(
-        f"""
-        <div class="book-card">
-            <h3>{random_book['title']}</h3>
-            <b>Author:</b> {random_book['authors']}<br>
-            {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in random_book['genres'].split(',')]) if 'genres' in random_book and pd.notna(random_book['genres']) else ""}
-            <p>{random_book['description'][:300]}...</p>
-        </div>
-        """, unsafe_allow_html=True
+        textwrap.dedent(f"""
+            <div class="book-card">
+                <h3>{random_book['title']}</h3>
+                <b>Author:</b> {random_book['authors']}<br>
+                {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in random_book['genres'].split(',')]) if 'genres' in random_book and pd.notna(random_book['genres']) else ""}
+                <p>{random_book['description'][:300]}...</p>
+            </div>
+        """),
+        unsafe_allow_html=True
     )
     st.markdown("---")
-    
+
 def recommend_books(query, k=5):
     if not query:
         return []
@@ -201,17 +204,18 @@ if query:
         for i, book in enumerate(recs):
             with cols[i % 2]:
                 st.markdown(
-                    f"""
-                    <div class="book-card">
-                        <h3>{book['title']}</h3>
-                        <b>Author:</b> {book['authors']}<br>
-                        {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
-                        {'<img src="'+book['cover_url']+'" width="120">' if book['cover_url'] else ''}
-                        <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
-                        <div>{book['description']}</div>
-                        <a href="{book['info_link']}" target="_blank">More Info</a>
-                    </div>
-                    """, unsafe_allow_html=True
+                    textwrap.dedent(f"""
+                        <div class="book-card">
+                            <h3>{book['title']}</h3>
+                            <b>Author:</b> {book['authors']}<br>
+                            {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
+                            {'<img src="'+book['cover_url']+'" width="120">' if book['cover_url'] else ''}
+                            <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
+                            <div>{book['description']}</div>
+                            <a href="{book['info_link']}" target="_blank">More Info</a>
+                        </div>
+                    """),
+                    unsafe_allow_html=True
                 )
                 st.progress(int((book['rating'] / 5.0) * 100))
     else:
