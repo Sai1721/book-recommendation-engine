@@ -15,7 +15,7 @@ st.markdown("""
     }
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+        background: linear-gradient(135deg, #4b4df0 0%, #666cf6 100%);
         color: #fff !important;
     }
     /* Sidebar text */
