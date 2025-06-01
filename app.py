@@ -57,7 +57,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 # Load dataset and index
 @st.cache_data
 def load_data():
