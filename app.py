@@ -10,17 +10,17 @@ st.markdown("""
     <style>
     /* Main background */
     .stApp {
-        background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
         min-height: 100vh;
     }
     /* Sidebar background */
     [data-testid="stSidebar"] {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.6) 0%, rgba(129, 140, 248, 0.6) 100%) !important;
+        background: linear-gradient(135deg, #3730a3 0%, #6366f1 100%) !important;
         color: #fff !important;
     }
     /* Sidebar text */
-    section[data-testid="stSidebar"] .css-1v0mbdj, 
-    section[data-testid="stSidebar"] .css-1cpxqw2 {
+    [data-testid="stSidebar"] .css-1v0mbdj, 
+    [data-testid="stSidebar"] .css-1cpxqw2 {
         color: #fff !important;
     }
     /* Surprise Me button */
