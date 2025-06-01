@@ -10,13 +10,14 @@ st.markdown("""
     <style>
     /* Main background */
     .stApp {
-        background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);
+        background: linear-gradient(135deg, #232b5d 0%, #6366f1 100%);
+        color: #fff !important;
         min-height: 100vh;
     }
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(135deg, #232b5d 0%, #6366f1 100%);
-        color: #fff !important;
+        background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);
+        
     }
     /* Sidebar text */
     section[data-testid="stSidebar"] .css-1v0mbdj, 
