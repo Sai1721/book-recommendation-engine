@@ -163,12 +163,10 @@ if st.sidebar.button("🎲 Surprise Me!"):
     st.subheader("🎲 Random Book Recommendation")
     st.markdown(
         textwrap.dedent(f"""
-            <div class="book-card">
-                <h3>{random_book['title']}</h3>
-                <b>Author:</b> {random_book['authors']}<br>
-                {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in random_book['genres'].split(',')]) if 'genres' in random_book and pd.notna(random_book['genres']) else ""}
-                <p>{random_book['description'][:300]}...</p>
-            </div>
+            <h3>{random_book['title']}</h3>
+            <b>Author:</b> {random_book['authors']}<br>
+            {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in random_book['genres'].split(',')]) if 'genres' in random_book and pd.notna(random_book['genres']) else ""}
+            <p>{random_book['description'][:300]}...</p>
         """),
         unsafe_allow_html=True
     )
