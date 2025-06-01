@@ -5,6 +5,59 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 
+# --- Custom CSS for attractive background and sidebar ---
+st.markdown("""
+    <style>
+    /* Main background */
+    .stApp {
+        background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+        min-height: 100vh;
+    }
+    /* Sidebar background */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+        color: #fff !important;
+    }
+    /* Sidebar text */
+    section[data-testid="stSidebar"] .css-1v0mbdj, 
+    section[data-testid="stSidebar"] .css-1cpxqw2 {
+        color: #fff !important;
+    }
+    /* Header */
+    .st-emotion-cache-10trblm {
+        color: #3730a3 !important;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #e0e7ff;
+    }
+    /* Book card */
+    .book-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px 0 rgba(99,102,241,0.08);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: box-shadow 0.2s;
+    }
+    .book-card:hover {
+        box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18);
+    }
+    /* Genre badge */
+    .genre-badge {
+        background: #6366f1;
+        color: #fff;
+        border-radius: 12px;
+        padding: 2px 12px;
+        margin-right: 6px;
+        font-size: 0.85em;
+        display: inline-block;
+    }
+    /* Progress bar override */
+    .stProgress > div > div > div > div {
+        background-image: linear-gradient(90deg, #6366f1, #818cf8);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Load dataset and index
 @st.cache_data
 def load_data():
@@ -26,7 +79,7 @@ index = load_faiss_index()
 model = load_model()
 
 # Sidebar filters
-st.sidebar.header("Filter books")
+st.sidebar.header("🔎 Filter books")
 
 # Filter: Genre
 if 'genres' in df.columns:
@@ -57,9 +110,9 @@ if selected_authors:
 if selected_years:
     filtered_df = filtered_df[filtered_df['publishedDate'].apply(lambda x: str(x)[:4] if pd.notna(x) else None).isin(selected_years)]
 
-st.title("📚 Semantic Book Recommendation Engine")
+st.markdown("<h1 style='text-align:center;'>📚 Semantic Book Recommendation Engine</h1>", unsafe_allow_html=True)
 
-query = st.text_input("Enter a book title or description to get recommendations:")
+query = st.text_input("🔍 Enter a book title or description to get recommendations:")
 
 def fetch_cover(title, author):
     try:
@@ -74,18 +127,21 @@ def fetch_cover(title, author):
     return ""
 import random
 
-
 # Random Book Button
 if st.sidebar.button("🎲 Surprise Me!"):
     random_idx = random.choice(filtered_df.index)
     random_book = filtered_df.loc[random_idx]
     st.subheader("🎲 Random Book Recommendation")
-    st.markdown(f"### {random_book['title']}")
-    st.markdown(f"**Author:** {random_book['authors']}")
-    if 'genres' in random_book and pd.notna(random_book['genres']):
-        genres = [g.strip() for g in random_book['genres'].split(',')]
-        st.markdown(" ".join([f"<span style='background-color:#eee;border-radius:5px;padding:2px 8px;margin-right:4px'>{g}</span>" for g in genres]), unsafe_allow_html=True)
-    st.markdown(f"{random_book['description'][:300]}...")
+    st.markdown(
+        f"""
+        <div class="book-card">
+            <h3>{random_book['title']}</h3>
+            <b>Author:</b> {random_book['authors']}<br>
+            {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in random_book['genres'].split(',')]) if 'genres' in random_book and pd.notna(random_book['genres']) else ""}
+            <p>{random_book['description'][:300]}...</p>
+        </div>
+        """, unsafe_allow_html=True
+    )
     st.markdown("---")
     
 def recommend_books(query, k=5):
@@ -117,21 +173,20 @@ if query:
         cols = st.columns(2)
         for i, book in enumerate(recs):
             with cols[i % 2]:
-                st.markdown(f"### {book['title']}")
-                st.markdown(f"**Author:** {book['authors']}")
-                # Genre badges
-                if book['genres']:
-                    genres = [g.strip() for g in book['genres'].split(',')]
-                    st.markdown(" ".join([f"<span style='background-color:#eee;border-radius:5px;padding:2px 8px;margin-right:4px'>{g}</span>" for g in genres]), unsafe_allow_html=True)
-                # Book cover
-                if book['cover_url']:
-                    st.image(book['cover_url'], width=120)
-                # Rating bar
-                st.markdown(f"**Rating:** {book['rating']} ⭐")
+                st.markdown(
+                    f"""
+                    <div class="book-card">
+                        <h3>{book['title']}</h3>
+                        <b>Author:</b> {book['authors']}<br>
+                        {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
+                        {'<img src="'+book['cover_url']+'" width="120">' if book['cover_url'] else ''}
+                        <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
+                        <div>{book['description']}</div>
+                        <a href="{book['info_link']}" target="_blank">More Info</a>
+                    </div>
+                    """, unsafe_allow_html=True
+                )
                 st.progress(int((book['rating'] / 5.0) * 100))
-                st.markdown(f"{book['description']}")
-                st.markdown(f"[More Info]({book['info_link']})")
-                st.markdown("---")
     else:
         st.write("No recommendations found for your query.")
 else:
