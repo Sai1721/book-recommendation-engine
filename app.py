@@ -9,19 +9,19 @@ import numpy as np
 st.markdown("""
     <style>
     /* Main background */
-        .stApp {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
-            min-height: 100vh;
-        }
+    .stApp {
+        background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+        min-height: 100vh;
+    }
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);
-        color: #232b5d !important;
+        background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+        color: #fff !important;
     }
     /* Sidebar text */
     section[data-testid="stSidebar"] .css-1v0mbdj, 
     section[data-testid="stSidebar"] .css-1cpxqw2 {
-        color: #232b5d !important;
+        color: #fff !important;
     }
     /* Surprise Me button */
     .stSidebar button[kind="secondary"] {
