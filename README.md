@@ -68,15 +68,6 @@ The dataset contains metadata for thousands of books including:
 
 ---
 
-## 📸 Screenshots
-
-| Home Page | Recommendations |
-|-----------|-----------------|
-| ![Home](https://via.placeholder.com/300x180?text=Home+Page) | ![Recs](https://via.placeholder.com/300x180?text=Recommendations) |
-
-> Replace the above image links with actual screenshots if available.
-
----
 
 ## 🔧 Installation & Run
 
