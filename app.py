@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     /* Main background */
     .stApp {
-        background: linear-gradient(135deg, #232b5d 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #232b5d 50%, #6366f1 50%);
         min-height: 100vh;
     }
     /* Sidebar background */
