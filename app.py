@@ -209,7 +209,7 @@ if query:
                             <h3>{book['title']}</h3>
                             <b>Author:</b> {book['authors']}<br>
                             {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
-                            {'<img src="'+book['cover_url']+'" width="120">' if book['cover_url'] else ''}
+                            {f'<img src="{book["cover_url"]}" width="120">' if book["cover_url"] else ""}
                             <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
                             <div>{book['description']}</div>
                             <a href="{book['info_link']}" target="_blank">More Info</a>
