@@ -205,15 +205,13 @@ if query:
             with cols[i % 2]:
                 st.markdown(
                     textwrap.dedent(f"""
-                        <div class="book-card">
-                            <h3>{book['title']}</h3>
-                            <b>Author:</b> {book['authors']}<br>
-                            {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
-                            {f'<img src="{book["cover_url"]}" width="120">' if book["cover_url"] else ""}
-                            <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
-                            <div>{book['description']}</div>
-                            <a href="{book['info_link']}" target="_blank">More Info</a>
-                        </div>
+                        <h3>{book['title']}</h3>
+                        <b>Author:</b> {book['authors']}<br>
+                        {" ".join([f"<span class='genre-badge'>{g.strip()}</span>" for g in book['genres'].split(',')]) if book['genres'] else ""}
+                        {f'<img src="{book["cover_url"]}" width="120">' if book["cover_url"] else ""}
+                        <div style="margin: 8px 0 4px 0;"><b>Rating:</b> {book['rating']} ⭐</div>
+                        <div>{book['description']}</div>
+                        <a href="{book['info_link']}" target="_blank">More Info</a>
                     """),
                     unsafe_allow_html=True
                 )
