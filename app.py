@@ -11,31 +11,30 @@ st.markdown("""
     /* Main background */
     .stApp {
         background: linear-gradient(135deg, #232b5d 0%, #6366f1 100%);
-        color: #fff !important;
         min-height: 100vh;
     }
     /* Sidebar background */
     section[data-testid="stSidebar"] {
         background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);
-        
+        color: #232b5d !important;
     }
     /* Sidebar text */
     section[data-testid="stSidebar"] .css-1v0mbdj, 
     section[data-testid="stSidebar"] .css-1cpxqw2 {
-        color: #fff !important;
+        color: #232b5d !important;
     }
     /* Surprise Me button */
     .stSidebar button[kind="secondary"] {
-        color: #232b5d !important;
-        background: #fff !important;
+        color: #fff !important;
+        background: #6366f1 !important;
         border-radius: 8px;
         font-weight: bold;
-        border: 2px solid #6366f1 !important;
+        border: 2px solid #232b5d !important;
         margin-bottom: 10px;
     }
     /* Text input box */
     .stTextInput > div > div > input {
-        background: #f5f7fa !important;
+        background: #fff !important;
         color: #232b5d !important;
         border-radius: 8px;
         border: 1.5px solid #6366f1 !important;
@@ -136,7 +135,7 @@ if selected_years:
 
 # Improved single-line, left-aligned header
 st.markdown(
-    "<h1 style='text-align:left; margin-bottom:0.5rem; margin-top:0.5rem; font-size:2.1rem; letter-spacing:1px; line-height:1.2;'>📚 Semantic Book Recommendation Engine</h1>",
+    "<h1 style='text-align:left; margin-bottom:0.5rem; margin-top:0.5rem; font-size:2.1rem; letter-spacing:1px; line-height:1.2;'>📚 Book Recommendation Engine</h1>",
     unsafe_allow_html=True
 )
 
