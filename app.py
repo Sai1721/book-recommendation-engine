@@ -173,25 +173,30 @@ if st.sidebar.button("🎲 Surprise Me!"):
     st.markdown("---")
 
 def recommend_books(query, k=5):
-    if not query:
+    if not query or filtered_df.empty:
         return []
     query_embedding = model.encode([query])
-    D, I = index.search(np.array(query_embedding), k)
+    D, I = index.search(np.array(query_embedding), k * 3)  # search more to account for filtering
     results = []
+    filtered_indices = filtered_df.index.tolist()
+    count = 0
     for idx in I[0]:
-        row = filtered_df.iloc[idx]
-        cover_url = fetch_cover(row['title'], row['authors'])
-        # Simulate a rating for demo purposes
-        rating = round(random.uniform(3.0, 5.0), 2)
-        results.append({
-            "title": row['title'],
-            "authors": row['authors'],
-            "description": row['description'][:300] + "...",
-            "cover_url": cover_url,
-            "info_link": f"https://books.google.com/books?q={row['title'].replace(' ', '+')}",
-            "genres": row['genres'] if 'genres' in row else "",
-            "rating": rating
-        })
+        if idx in filtered_indices:
+            row = filtered_df.loc[idx]
+            cover_url = fetch_cover(row['title'], row['authors'])
+            rating = round(random.uniform(3.0, 5.0), 2)
+            results.append({
+                "title": row['title'],
+                "authors": row['authors'],
+                "description": row['description'][:300] + "...",
+                "cover_url": cover_url,
+                "info_link": f"https://books.google.com/books?q={row['title'].replace(' ', '+')}",
+                "genres": row['genres'] if 'genres' in row else "",
+                "rating": rating
+            })
+            count += 1
+            if count >= k:
+                break
     return results
 
 if query:
