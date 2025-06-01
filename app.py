@@ -14,8 +14,8 @@ st.markdown("""
         min-height: 100vh;
     }
     /* Sidebar background */
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(135deg, #4b4df0 0%, #666cf6 100%);
+    [data-testid="stSidebar"] {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.6) 0%, rgba(129, 140, 248, 0.6) 100%) !important;
         color: #fff !important;
     }
     /* Sidebar text */
