@@ -5,17 +5,17 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 
-# --- Custom CSS for attractive background and sidebar ---
+# --- Custom CSS for improved UI ---
 st.markdown("""
     <style>
     /* Main background */
     .stApp {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+        background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);
         min-height: 100vh;
     }
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+        background: linear-gradient(135deg, #232b5d 0%, #6366f1 100%);
         color: #fff !important;
     }
     /* Sidebar text */
@@ -23,11 +23,34 @@ st.markdown("""
     section[data-testid="stSidebar"] .css-1cpxqw2 {
         color: #fff !important;
     }
+    /* Surprise Me button */
+    .stSidebar button[kind="secondary"] {
+        color: #232b5d !important;
+        background: #fff !important;
+        border-radius: 8px;
+        font-weight: bold;
+        border: 2px solid #6366f1 !important;
+        margin-bottom: 10px;
+    }
+    /* Text input box */
+    .stTextInput > div > div > input {
+        background: #f5f7fa !important;
+        color: #232b5d !important;
+        border-radius: 8px;
+        border: 1.5px solid #6366f1 !important;
+        font-weight: 500;
+    }
     /* Header */
-    .st-emotion-cache-10trblm {
+    .st-emotion-cache-10trblm, .st-emotion-cache-1v0mbdj {
         color: #3730a3 !important;
         font-weight: bold;
         text-shadow: 1px 1px 2px #e0e7ff;
+        text-align: left !important;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 2.1rem;
+        letter-spacing: 1px;
+        line-height: 1.2;
     }
     /* Book card */
     .book-card {
@@ -57,6 +80,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 # Load dataset and index
 @st.cache_data
 def load_data():
@@ -109,7 +133,11 @@ if selected_authors:
 if selected_years:
     filtered_df = filtered_df[filtered_df['publishedDate'].apply(lambda x: str(x)[:4] if pd.notna(x) else None).isin(selected_years)]
 
-st.markdown("<h1 style='text-align:center;'>📚 Semantic Book Recommendation Engine</h1>", unsafe_allow_html=True)
+# Improved single-line, left-aligned header
+st.markdown(
+    "<h1 style='text-align:left; margin-bottom:0.5rem; margin-top:0.5rem; font-size:2.1rem; letter-spacing:1px; line-height:1.2;'>📚 Semantic Book Recommendation Engine</h1>",
+    unsafe_allow_html=True
+)
 
 query = st.text_input("🔍 Enter a book title or description to get recommendations:")
 
