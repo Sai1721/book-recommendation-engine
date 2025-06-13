@@ -122,7 +122,7 @@ AI Intern @ Workcohol | B.Tech - Artificial intelligence and data science
 
 ## 📃 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE/LICENSE.md).
 
 ---
 
